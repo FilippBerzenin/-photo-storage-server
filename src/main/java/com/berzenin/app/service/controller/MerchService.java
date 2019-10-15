@@ -1,7 +1,7 @@
 package com.berzenin.app.service.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,20 +38,65 @@ public class MerchService extends GenericServiceImpl<Merch, MerchRepository> {
 				.getObjectPlace());
 	}
 
-	public Map<LocalDate, List<Photo>> getPhotosByDates(Merch merch, List<LocalDate> dates) {
-		Map<LocalDate, List<Photo>> photoBydates = merch.getPhotos().stream()
-				.filter(photo -> dates.contains(photo.getDate()))
-				.collect(Collectors.groupingBy(Photo::getDate,
-			        Collectors.mapping(
-			        		photo -> photoService.findById(photo.getId()), Collectors.toList())));
+	public Map<LocalDate, Map<ObjectPlace, List<Photo>>> getPhotosByDates(Merch merch, List<LocalDate> dates) {
+		Map<LocalDate, Map<ObjectPlace, List<Photo>>> photoBydates = new HashMap<>();
+		
+		for(LocalDate date: dates) {
+			Map<ObjectPlace, List<Photo>> photoByObject = merch.getPhotos().stream()
+				.filter(photo -> photo.getDate().equals(date))
+				.collect(Collectors.groupingBy(Photo::getObjectPlace,
+				   Collectors.mapping(
+				       photo -> photoService.findById(photo.getId()), Collectors.toList())));
+			
+			photoBydates.put(date, photoByObject);
+		}
 		for (LocalDate date: dates) {
 			if (!photoBydates.containsKey(date)) {
-				photoBydates.put(date, new ArrayList<Photo>());
+				photoBydates.put(date, new HashMap<>());
 			}
 		}
 		SortedMap sortedMap = new TreeMap();
 		sortedMap.putAll(photoBydates);
 		return sortedMap;
 	}
-
+	
+	public Map<ObjectPlace, List<Photo>> getPhotosByShops(Merch merch, LocalDate date) {
+		Map<ObjectPlace, List<Photo>> photoBydates = merch.getPhotos().stream()
+				.filter(photo -> date.equals(photo.getDate()))
+				.filter(photo -> merch.getObjectPlace().contains(photo.getObjectPlace()))
+				.collect(Collectors.groupingBy(Photo::getObjectPlace,
+			        Collectors.mapping(
+			        		photo -> photoService.findById(photo.getId()), Collectors.toList())));
+		return photoBydates;
+	}
+	
+	public Optional<Merch> findByName (String name) {
+		return repository.findByName(name);
+	}
+	
+	@Override
+	public void removeById(Long id) {
+		System.out.println(id);
+		Merch entity = this.findById(id);
+		Merch arhiv;
+		if (this.findByName("arhiv").isPresent()) {
+			arhiv = this.findByName("arhiv").get();
+		} else {
+			arhiv = new Merch();
+			arhiv.setName("arhiv");
+			arhiv.setLogin("arhiv");
+			arhiv.setPass("arhiv");
+			this.add(arhiv);
+		}
+		entity.getPhotos().forEach(photo -> {
+			photo.setMerch(arhiv);
+			photoService.update(photo);
+		});		
+		entity.getObjectPlace().forEach(shop -> {
+			shop.getMerch().remove(entity);
+		});
+		entity.setObjectPlace(null);
+		this.update(entity);
+		super.remove(entity);
+	}
 }

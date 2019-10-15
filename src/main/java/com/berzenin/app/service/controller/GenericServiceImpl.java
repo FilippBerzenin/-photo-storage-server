@@ -2,9 +2,6 @@ package com.berzenin.app.service.controller;
 
 import java.util.List;
 
-import javax.persistence.*;
-
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,7 @@ public abstract class GenericServiceImpl<E, R extends JpaRepository<E, Long>> im
 		return repository.findById(id)
 				.orElseThrow(NotFoundException::new);
 	}
-
+	
 	@Override
 	public E add(E entity) {
 		return repository.save(entity);
