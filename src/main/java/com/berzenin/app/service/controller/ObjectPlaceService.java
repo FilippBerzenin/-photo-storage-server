@@ -1,9 +1,10 @@
 package com.berzenin.app.service.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -26,15 +27,24 @@ public class ObjectPlaceService extends GenericServiceImpl<ObjectPlace, ObjectPl
 	@Autowired
 	private PhotoService photoService;
 	
-	public Map<LocalDate, List<Photo>> getPhotosByDates(ObjectPlace shops, List<LocalDate> dates) {
-		Map<LocalDate, List<Photo>> photoBydates = shops.getPhotos().stream()
-				.filter(photo -> dates.contains(photo.getDate()))
-				.collect(Collectors.groupingBy(Photo::getDate,
-			        Collectors.mapping(
-			        		photo -> photoService.findById(photo.getId()), Collectors.toList())));
+	@Autowired
+	private MerchService merchService;	
+
+	public Map<LocalDate, Map<Merch, List<Photo>>> getPhotosByDates(ObjectPlace shops, List<LocalDate> dates) {
+		Map<LocalDate, Map<Merch, List<Photo>>> photoBydates = new HashMap<>();
+		
+		for(LocalDate date: dates) {
+			Map<Merch, List<Photo>> photoByObject = shops.getPhotos().stream()
+				.filter(photo -> photo.getDate().equals(date))
+				.collect(Collectors.groupingBy(Photo::getMerch,
+				   Collectors.mapping(
+				       photo -> photoService.findById(photo.getId()), Collectors.toList())));
+			
+			photoBydates.put(date, photoByObject);
+		}
 		for (LocalDate date: dates) {
 			if (!photoBydates.containsKey(date)) {
-				photoBydates.put(date, new ArrayList<Photo>());
+				photoBydates.put(date, null);
 			}
 		}
 		SortedMap sortedMap = new TreeMap();
@@ -42,4 +52,31 @@ public class ObjectPlaceService extends GenericServiceImpl<ObjectPlace, ObjectPl
 		return sortedMap;
 	}
 
+	public Optional<ObjectPlace> findByName(String name) {
+		return repository.findByName(name);
+	}
+	
+	@Override
+	public void removeById(Long id) {
+		ObjectPlace entity = this.findById(id);
+		ObjectPlace arhiv;
+		if (this.findByName("arhiv").isPresent()) {
+			arhiv = this.findByName("arhiv").get();
+		} else {
+			arhiv = new ObjectPlace();
+			arhiv.setName("arhiv");
+			this.add(arhiv);
+		}
+		entity.getPhotos().forEach(photo -> {
+			photo.setObjectPlace(arhiv);
+			photoService.update(photo);
+		});
+		entity.getMerch().forEach(merch -> {
+			merch.getObjectPlace().remove(entity);
+			merchService.update(merch);
+		});
+		entity.setMerch(null);
+		this.update(entity);
+		super.remove(entity);
+	}
 }

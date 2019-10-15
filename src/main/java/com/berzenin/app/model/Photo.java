@@ -2,6 +2,7 @@ package com.berzenin.app.model;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +49,9 @@ public class Photo {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	
+	@DateTimeFormat(pattern = "HH:mm:ss")
+	private LocalTime time;	
+	
 	@NotNull
 	@Size(min=1, max=100)
 	@Column(name = "url_photo", nullable = false)
@@ -65,5 +69,4 @@ public class Photo {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="merch_photos")
 	private Merch merch;
-
 }

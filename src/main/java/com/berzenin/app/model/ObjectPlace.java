@@ -23,24 +23,32 @@ import lombok.ToString;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"merch", "photos"})
-@ToString(exclude = {"merch", "photos"})
+@EqualsAndHashCode(exclude = { "merch", "photos" })
+@ToString(exclude = { "merch", "photos" })
 public class ObjectPlace {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
+
 	@NotNull
-	@Size (min=1, max=100)
+	@Size(min = 1, max = 100)
 	private String name;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="objectPlace", cascade = CascadeType.ALL)
+
+	@OneToMany(
+			fetch = FetchType.LAZY, 
+			mappedBy = "objectPlace", 
+			cascade = CascadeType.ALL
+			)
 	@Column(name = "objects_photos")
 	@JsonIgnore
 	private List<Photo> photos;
-	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "objectPlace")
+
+	@ManyToMany(
+			fetch = FetchType.LAZY, 
+			mappedBy = "objectPlace", 
+			cascade = CascadeType.ALL
+			)
 	@JsonIgnore
 	private Set<Merch> merch;
 }

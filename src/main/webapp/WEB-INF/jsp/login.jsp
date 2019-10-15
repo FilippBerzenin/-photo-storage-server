@@ -29,10 +29,14 @@
 	<div class="jumbotron text-center" style="margin-bottom: 0">
 		<h1>Logo</h1>
 	</div>
+	
 	<div class="container login-container" align="center">
 		<div class="col-md-6 login-form-1">
 			<h3>Login</h3>
 			<form action="/login" method="post">
+				<c:if test="${param.error != null}">
+					<div class="alert alert-warning">Пароль или логин неправильные</div>
+				</c:if>
 				<div class="form-group">
 					<input type="text" class="form-control" name="username" value="" />
 				</div>

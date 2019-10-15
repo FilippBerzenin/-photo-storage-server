@@ -1,0 +1,6 @@
+.image-size img {
+  display: block;
+  width: 60px;
+  height: 35px !important;
+  margin: 0 auto;
+}

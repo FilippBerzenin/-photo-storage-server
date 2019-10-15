@@ -3,6 +3,7 @@ package com.berzenin.app.model;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -56,7 +57,7 @@ public class Merch {
 	private List<Photo> photos;
 	
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinTable(
 			  name = "merch_object", 
 			  joinColumns = @JoinColumn(name = "merch_id"), 

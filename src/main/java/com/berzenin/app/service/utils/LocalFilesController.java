@@ -40,10 +40,15 @@ public class LocalFilesController {
 	
 	public Optional<Path> getPathForPhoto(Photo photo, MultipartFile file) {
 		try {
+			String year = Integer.toString(photo.getDate().getYear());
+			String month = Integer.toString(photo.getDate().getMonthValue());
+			String day = Integer.toString(photo.getDate().getDayOfMonth());
 		Path dir = Paths.get(pathToResource, 
-				photo.getDate().toString(), 
-				photo.getMerch().getName(), 
-				photo.getObjectPlace().getName());
+				year, 
+				month,
+				day,
+				photo.getMerch().getName().trim(), 
+				photo.getObjectPlace().getName().trim());
 				
 		if (Files.notExists(dir)) {
 			Files.createDirectories(dir);
@@ -86,33 +91,6 @@ public class LocalFilesController {
 			}
 		}
 	}
-
-
-//	public boolean downloadPdfFileFromUrl (LinkForMetalResources res) {
-//		if (res.getUrlForResource() == null || res.getUrlForResource().length()==0) {
-//			return false;
-//		}
-//		URL url = null;
-//		Path filePdf = Paths.get(res.getLocalPathForPdfFile());
-//		try {
-//			url = new URL(res.getUrlForResource());
-//		} catch (MalformedURLException e) {
-//			log.error(e.getMessage());
-//			e.printStackTrace();
-//			return false;
-//		}
-//		try (InputStream in = url.openStream()) {
-//			if (!Files.exists(filePdf)) {
-//				Files.createFile(filePdf);
-//			}
-//			Files.copy(in, filePdf, StandardCopyOption.REPLACE_EXISTING);
-//			return true;
-//		} catch (IOException e) {
-//			log.error(e.getMessage());
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
 	
 	public String setPathForFile(String url) {
 		String path = "";
@@ -128,7 +106,6 @@ public class LocalFilesController {
 		}
 		return path;
 	}
-	
 
 	public Optional<List<String>> readAllLines(String url) {
 		try {
@@ -138,6 +115,4 @@ public class LocalFilesController {
 			return Optional.empty();
 		}
 	}
-	
-
 }
