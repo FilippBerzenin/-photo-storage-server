@@ -4,3 +4,7 @@
   height: 35px !important;
   margin: 0 auto;
 }
+
+#image_head {
+	background: url(/Logo.jpg) no-repeat center;
+}

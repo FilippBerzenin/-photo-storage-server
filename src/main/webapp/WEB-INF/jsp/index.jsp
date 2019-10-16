@@ -9,25 +9,19 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/dopstyle.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<style>
-.fakeimg {
-	height: 200px;
-	background: #aaa;
-}
-</style>
 <c:set var="prefix" value="${pageContext.request.contextPath}" />
 <c:set var="page" value="${page}" />
 </head>
 <body>
 
-	<div class="jumbotron text-center" style="margin-bottom: 0">
-		<img src="${logo}" alt="Logo">
+	<div class="jumbotron" style="background: url(${logo}) no-repeat center;">
 	</div>
 
 	<div class="container" align="center" style="margin-top: 30px">
