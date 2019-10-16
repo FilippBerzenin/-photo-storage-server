@@ -6,12 +6,15 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.berzenin.app.dao.PhotoRepository;
 import com.berzenin.app.model.Photo;
 import com.berzenin.app.service.utils.LocalFilesController;
+
+import lombok.Getter;
 
 @Service
 public class PhotoService extends GenericServiceImpl<Photo, PhotoRepository> {
@@ -38,12 +41,17 @@ public class PhotoService extends GenericServiceImpl<Photo, PhotoRepository> {
 		return Optional.of(photo);
 	}
 	
+	@Getter
+	@Value("${value.from.image.store}")
+	protected String pathToResource;
+	
 	public Optional<Photo> add(Photo photo, MultipartFile file) {
 		try {
 			Path path = controller.getPathForPhoto(photo, file).get();
 			photo.setFile(path.toFile());
-			photo.setTime(LocalTime.now()); 			
-			photo.setPathFoPhoto(path.toString().replace("..\\Server-for-photo\\src\\main\\webapp", ""));
+			photo.setTime(LocalTime.now());
+			String exrise = pathToResource.substring(0, pathToResource.indexOf("image")-1);
+			photo.setPathFoPhoto(path.toString().replace(exrise.replace("/", "\\"), ""));
 //			photo.setPathFoPhoto(path.toString());
 			repository.save(photo);
 		} catch (RuntimeException e) {

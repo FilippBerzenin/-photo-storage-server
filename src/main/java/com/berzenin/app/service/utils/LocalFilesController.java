@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class LocalFilesController {
 	
 	@Getter
-	protected static final String pathToResource = "..\\Server-for-photo\\src\\main\\webapp\\image";
+	@Value("${value.from.image.store}")
+	protected String pathToResource;
 	
 	public Optional<Path> copyFileForlocalDirectory(MultipartFile file) {
 		Path copied = Paths.get(pathToResource, file.getOriginalFilename());

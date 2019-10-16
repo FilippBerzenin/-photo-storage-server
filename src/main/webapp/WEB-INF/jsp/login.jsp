@@ -16,7 +16,7 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
-.fakeimg {
+.fakeimg {	
 	height: 200px;
 	background: #aaa;
 }
@@ -27,7 +27,7 @@
 <body>
 
 	<div class="jumbotron text-center" style="margin-bottom: 0">
-		<h1>Logo</h1>
+		<img src="/Logo.jpg" alt="Logo">
 	</div>
 	
 	<div class="container login-container" align="center">

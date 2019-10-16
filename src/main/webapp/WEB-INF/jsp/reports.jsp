@@ -49,7 +49,7 @@
 <body>
 
 	<div class="jumbotron text-center" style="margin-bottom: 0">
-		<h1>Logo</h1>
+		<img src="${logo}" alt="Logo">
 	</div>
 
 	<div class="container-fluid" align="center" style="margin-top: 30px">

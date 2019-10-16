@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,9 @@ public class MerchInnerViewController extends GenericViewControllerImpl<Merch, M
 	@Autowired
 	private ObjectPlaceService objectPlaceService;
 	
+	@Value("${value.from.logo}")
+	protected String logoImg;
+	
 	public MerchInnerViewController(MerchService service) {
 		page = "merch_inner";
 	}
@@ -47,6 +51,7 @@ public class MerchInnerViewController extends GenericViewControllerImpl<Merch, M
 			Merch merch = service.findById(id);
 			model.addAttribute("entity", merch);
 			model.addAttribute("page", "merch_inner");
+			model.addAttribute("logo", logoImg);
 			return page;	
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model);
@@ -71,6 +76,7 @@ public class MerchInnerViewController extends GenericViewControllerImpl<Merch, M
 			model.addAttribute("objectsList", objectsList);
 			model.addAttribute("entity", merch);
 			model.addAttribute("page", "merch_inner");
+			model.addAttribute("logo", logoImg);
 			return page;	
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model);
@@ -95,6 +101,7 @@ public class MerchInnerViewController extends GenericViewControllerImpl<Merch, M
 			model.addAttribute("objectsList", objectsList);
 			model.addAttribute("entity", merch);
 			model.addAttribute("page", "merch_inner");
+			model.addAttribute("logo", logoImg);
 			return page;	
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model);
@@ -113,6 +120,7 @@ public class MerchInnerViewController extends GenericViewControllerImpl<Merch, M
 		oldMerch.setPass(entity.getPass());
 		model.addAttribute("entity", oldMerch);
 		model.addAttribute("page", "merch_inner");
+		model.addAttribute("logo", logoImg);
 		return super.update(oldMerch, result, model);
 	}
 

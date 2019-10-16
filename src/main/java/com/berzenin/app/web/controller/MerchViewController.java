@@ -2,6 +2,7 @@ package com.berzenin.app.web.controller;
 
 import javax.annotation.security.PermitAll;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,9 @@ public class MerchViewController extends GenericViewControllerImpl<Merch, MerchS
 		page = "merch";
 	}
 	
+	@Value("${value.from.logo}")
+	protected String logoImg;
+	
 	@ModelAttribute("new_merch")
 	public Merch getLoginForm() {
 		return new Merch();
@@ -29,6 +33,7 @@ public class MerchViewController extends GenericViewControllerImpl<Merch, MerchS
 	public String deleteEntity(
 			@PathVariable("id") Long id,
 			Model model) {
+		model.addAttribute("logo", logoImg);
 		return super.deleteEntity(id, model);
 	}
 	}
