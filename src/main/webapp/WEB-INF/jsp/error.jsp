@@ -5,9 +5,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" href="css/dopstyle.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>Insert title here</title>
 </head>
 <body>
+	<div class="jumbotron" style="background: url(${logo}) no-repeat center;">
+	</div>
 <a href="${prefix}/">Back</a> <br />
 	<h1>Error</h1>
 		<c:if test="${not empty message}">

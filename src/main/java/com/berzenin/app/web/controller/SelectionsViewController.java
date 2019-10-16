@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +36,9 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 	
 	@Autowired
 	private ObjectPlaceService shopService;
+	
+	@Value("${value.from.logo}")
+	protected String logoImg;
 
 	public SelectionsViewController(SelectionsService service) {
 		page = "reports";
@@ -50,6 +54,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 	public String setStartPage(Model model) {
 		model.addAttribute("page", page);
 		model.addAttribute("objectTypes", TypeReqest.values());
+		model.addAttribute("logo", logoImg);
 		return page;
 	}
 	
@@ -64,6 +69,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 			model.addAttribute("message", "Обратите внимание на дату запроса");
 			model.addAttribute("page", page);
 			model.addAttribute("objectTypes", TypeReqest.values());
+			model.addAttribute("logo", logoImg);
 			return page;
 		}
 		} catch (RuntimeException e) {
@@ -71,6 +77,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 			model.addAttribute("message", "Обратите внимание на дату запроса");
 			model.addAttribute("page", page);
 			model.addAttribute("objectTypes", TypeReqest.values());
+			model.addAttribute("logo", logoImg);
 			return page;
 		}
 		List<LocalDate> dates = service.getDatesBetweenDatePlus6Days(req.getDateStartSearch());
@@ -92,6 +99,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 		model.addAttribute("listOfDates", dates);
 		model.addAttribute("page", page);
 		model.addAttribute("objectTypes", TypeReqest.values());
+		model.addAttribute("logo", logoImg);
 		return page;
 	}
 	
@@ -110,6 +118,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 			model.addAttribute("message", "Обратите внимание на период между датами запроса(не более 30 дней)");
 			model.addAttribute("page", page);
 			model.addAttribute("objectTypes", TypeReqest.values());
+			model.addAttribute("logo", logoImg);
 			return page;
 		}
 		LocalDate newDate;
@@ -135,6 +144,7 @@ public class SelectionsViewController extends GenericViewControllerImpl<Photo, S
 		model.addAttribute("listOfDates", dates);
 		model.addAttribute("page", page);
 		model.addAttribute("objectTypes", TypeReqest.values());
+		model.addAttribute("logo", logoImg);
 		return page;
 	}
 }

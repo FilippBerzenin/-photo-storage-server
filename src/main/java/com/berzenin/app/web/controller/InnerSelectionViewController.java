@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,9 @@ public class InnerSelectionViewController extends GenericViewControllerImpl<Phot
 	@Autowired
 	private PhotoService photoService;
 	
+	@Value("${value.from.logo}")
+	protected String logoImg;
+	
 	@RequestMapping(value = "/reports/merch_report", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String getRezultForMerch(@RequestParam("photos_list") String photo, Model model) {
@@ -38,6 +42,7 @@ public class InnerSelectionViewController extends GenericViewControllerImpl<Phot
 		model.addAttribute("potos_list", photos);
 		model.addAttribute("central_image", photos.get(0));
 		model.addAttribute("page", "photos_merch");
+		model.addAttribute("logo", logoImg);
 		
 		return "photos_merch";
 	}
@@ -56,7 +61,8 @@ public class InnerSelectionViewController extends GenericViewControllerImpl<Phot
 			photos.add(photoService.findById(i));		}
 		model.addAttribute("potos_list", photos);
 		model.addAttribute("central_image", photoService.findById(photo_id));
-		model.addAttribute("page", "photos_merch");		
+		model.addAttribute("page", "photos_merch");
+		model.addAttribute("logo", logoImg);
 		return "photos_merch";
 	}
 	
@@ -74,7 +80,8 @@ public class InnerSelectionViewController extends GenericViewControllerImpl<Phot
 			photos.add(photoService.findById(i));		}
 		model.addAttribute("potos_list", photos);
 		model.addAttribute("central_image", photoService.findById(photo_id));
-		model.addAttribute("page", "photos_shop");		
+		model.addAttribute("page", "photos_shop");
+		model.addAttribute("logo", logoImg);
 		return "photos_shop";
 	}
 	
@@ -90,6 +97,7 @@ public class InnerSelectionViewController extends GenericViewControllerImpl<Phot
 		}
 		model.addAttribute("potos_list", photos);
 		model.addAttribute("central_image", photos.get(0));
+		model.addAttribute("logo", logoImg);
 		
 		return "photos_shop";
 	}

@@ -1,11 +1,13 @@
 package com.berzenin.app.web.controller;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,9 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 	protected String message = "Something wrong";
 	protected List<E> entites;
 	protected String page = "error";
+	
+	@Value("${value.from.logo}")
+	protected String logoImg;
 	
 	@Override
 	public String findAll(Model model) {
@@ -111,6 +116,7 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 		model.addAttribute("page", page);
 		model.addAttribute("message", message);
 		model.addAttribute("listOfEntites", entites);
+		model.addAttribute("logo", logoImg);
 	}
 	
 	protected void setModelAttributeWhenthrowException (RuntimeException e, Model model) {
